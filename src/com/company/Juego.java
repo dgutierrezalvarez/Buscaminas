@@ -4,39 +4,37 @@ import java.util.Scanner;
 
 public class Juego {
 
-    private boolean valid;
+    private boolean validez;
     private boolean gameOver = false;
 
     public boolean isGameOver() {
         return gameOver;
     }
 
-    private int minasCazadasP1 = 0;
-    private int minasCazadasP2 = 0;
+    private int minasEncontradasP1 = 0;
+    private int minasEncontradasP2 = 0;
 
-    public int getMinasCazadasP1() {
-        return minasCazadasP1;
+    public int getMinasEncontradasP1() {
+        return minasEncontradasP1;
     }
 
-    public int getMinasCazadasP2() {
-        return minasCazadasP2;
+    public int getMinasEncontradasP2() {
+        return minasEncontradasP2;
     }
 
-    public Tablero start(String coor, Tablero tablero, boolean player) {
-        //valid = false;
-        //para repetir turno si no se introducen bien los parámetros
+    public Tablero start(String coor, Tablero tablero, boolean jugador) {
+
 
         try {
-            int hayMina = tablero.recorrer(coor, player);
+            int minaEncontrada = tablero.recorrer(coor, jugador);
 
-            // 1 = mina hallada; 0 = mina no hallada; -1 input erroneo
-            if (hayMina == 1 && player) minasCazadasP1++;
-            if (hayMina == 1 && !player) minasCazadasP2++;
-            if (hayMina != -1) valid = true;
+            if (minaEncontrada == 1 && jugador) minasEncontradasP1++;
+            if (minaEncontrada == 1 && !jugador) minasEncontradasP2++;
+            if (minaEncontrada != -1) validez = true;
         } catch (Exception e) {
             System.err.println(e);
         }
-        if (minasCazadasP1 + minasCazadasP2 == tablero.numMinas) gameOver = true;
+        if (minasEncontradasP1 + minasEncontradasP2 == tablero.numMinas) gameOver = true;
         return tablero;
     }
 }

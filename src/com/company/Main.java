@@ -11,6 +11,7 @@ public class Main {
 
         Client client = new Client("localhost", 5557);
 
+        System.out.println("===========BUSCAMINAS===========");
         System.out.println("1-Jugar\n2-Sortir");
         op = scanner.nextInt();
 

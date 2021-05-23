@@ -6,9 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Client extends Thread {
@@ -16,9 +13,9 @@ public class Client extends Thread {
     String hostname;
     int port;
     Tablero tablero;
-    boolean acabat = false;
-    String missatge;
-    boolean jugador, torn;
+    boolean terminado = false;
+    String mensaje;
+    boolean jugador, turno;
     String jugada;
 
     public Client(String hostname, int port){
@@ -35,22 +32,22 @@ public class Client extends Thread {
             ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream inFromServer = new ObjectInputStream(socket.getInputStream());
 
-            missatge = (String)  inFromServer.readObject();
-            System.out.println(missatge);
+            mensaje = (String)  inFromServer.readObject();
+            System.out.println(mensaje);
 
             jugador = (boolean) inFromServer.readObject();
 
-            while(!acabat){
+            while(!terminado){
                 //checkear turno, y hacer jugadaa
-                torn = (boolean) inFromServer.readObject();
+                turno = (boolean) inFromServer.readObject();
 
-                if(torn == jugador){
+                if(turno == jugador){
                     tablero = (Tablero) inFromServer.readObject();
-                    missatge = (String) inFromServer.readObject();
+                    mensaje = (String) inFromServer.readObject();
 
                     tablero.mostrarTablero();
 
-                    System.out.println("\n" + missatge);
+                    System.out.println("\n" + mensaje);
                     System.out.println("\nCoordenades: ");
                     jugada = scanner.nextLine();
 
@@ -59,23 +56,22 @@ public class Client extends Thread {
                     tablero = (Tablero) inFromServer.readObject();
                     tablero.mostrarTablero();
 
-                    acabat = (boolean) inFromServer.readObject();
+                    terminado = (boolean) inFromServer.readObject();
 
                 }else{
-                    missatge = (String) inFromServer.readObject();
-                    System.out.println("\n"+missatge);
+                    mensaje = (String) inFromServer.readObject();
+                    System.out.println("\n"+mensaje);
 
-                    acabat = (boolean) inFromServer.readObject();
+                    terminado = (boolean) inFromServer.readObject();
                 }
 
             }
 
-            missatge = (String) inFromServer.readObject();
-            System.out.println("\n"+missatge);
+            mensaje = (String) inFromServer.readObject();
+            System.out.println("\n"+mensaje);
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-
 }
